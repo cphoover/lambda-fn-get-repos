@@ -100,6 +100,15 @@ var RepoFetcher = function () {
 			var _this = this;
 
 			return this.getESClient().then(function (client) {
+
+				if (search.perPage) {
+					search.perPage = parseInt(search.perPage, 10);
+				}
+
+				if (search.page) {
+					search.page = parseInt(search.page, 10);
+				}
+
 				_this._validate(search);
 				logger.info('getting repos');
 				return client.search(_this._buildSearchObject(search));
