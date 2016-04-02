@@ -32,7 +32,7 @@ var logger = (0, _logger2.default)('lambda-fn-save-repos');
 var paramMap = require('./param_map');
 var searchableFields = ['name', 'description'];
 
-var DEFAULT_SIZE = 1000;
+var DEFAULT_SIZE = 20;
 var DEFAULT_SORT = 'latest-commit-desc';
 
 var RepoFetcher = function () {
@@ -101,8 +101,10 @@ var RepoFetcher = function () {
 
 			return this.getESClient().then(function (client) {
 
-				if (search.perPage) {
-					search.perPage = parseInt(search.perPage, 10);
+				if (search.per_page) {
+					// this is an exception to camelCase in that it is a config value
+					// @todo auto config to camelcase conversion
+					search.per_page = parseInt(search.per_page, 10); // eslint-disable-line camelcase
 				}
 
 				if (search.page) {
