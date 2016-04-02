@@ -99,13 +99,12 @@ var RepoFetcher = function () {
 	}, {
 		key: 'transformInput',
 		value: function transformInput(input) {
-			var res = _lodash2.default.extend({}, input, {
+			return _lodash2.default.extend({}, input, {
 				// this is an exception to camelCase in that it is a config value
 				// @todo auto config to camelcase conversion
 				per_page: input.per_page ? parseInt(input.per_page, 10) : DEFAULT_SIZE, // eslint-disable-line
 				page: input.page ? parseInt(input.page, 10) : 0
 			});
-			return res;
 		}
 	}, {
 		key: 'transformOutput',
