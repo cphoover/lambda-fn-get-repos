@@ -160,6 +160,14 @@ describe('RepoFetcher', function suite() {
 
 	it('smoke test it will pass the correct object to client.search', function test() {
 
+		var mockResponse = {
+			'hits': {
+				'total': 112,
+				'max_score': null,
+				'hits': []
+			}
+		};
+
 		var store = [];
 
 		var repoFetcher = new _2.default(settings);
@@ -168,7 +176,7 @@ describe('RepoFetcher', function suite() {
 			return _bluebird2.default.resolve({
 				search: function search(_payload) {
 					store.push(_payload);
-					return _bluebird2.default.resolve();
+					return _bluebird2.default.resolve(mockResponse);
 				}
 			});
 		});
@@ -193,18 +201,5 @@ describe('RepoFetcher', function suite() {
 				'from': 10
 			});
 		});
-	});
-
-	it('testing what response from es', function test() {
-
-		var repoFetcher = new _2.default(settings);
-
-		var payload = {
-			'page': 2,
-			'per_page': 5,
-			'sort': 'forks-asc'
-		};
-
-		return repoFetcher.run(payload);
 	});
 });

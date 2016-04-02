@@ -64,12 +64,14 @@ var RepoFetcher = function () {
 	}, {
 		key: '_buildSearchObject',
 		value: function _buildSearchObject(search) {
+			var tSearch = this.transformInput(search);
+			this._validate(tSearch);
 			var searchBody = function () {
-				if (search.text) {
+				if (tSearch.text) {
 					return {
 						'query': {
 							'multi_match': {
-								'query': search.text,
+								'query': tSearch.text,
 								'fields': searchableFields
 							}
 						}
@@ -88,11 +90,32 @@ var RepoFetcher = function () {
 				body: searchBody
 			};
 
-			esSearch.sort = paramMap[search.sort] || paramMap[DEFAULT_SORT];
-			esSearch.size = search.per_page || DEFAULT_SIZE;
-			esSearch.from = search.page ? search.page * esSearch.size : 0;
+			esSearch.sort = paramMap[tSearch.sort] || paramMap[DEFAULT_SORT];
+			esSearch.size = tSearch.per_page;
+			esSearch.from = tSearch.page * esSearch.size;
 
 			return esSearch;
+		}
+	}, {
+		key: 'transformInput',
+		value: function transformInput(input) {
+			var res = _lodash2.default.extend({}, input, {
+				// this is an exception to camelCase in that it is a config value
+				// @todo auto config to camelcase conversion
+				per_page: input.per_page ? parseInt(input.per_page, 10) : DEFAULT_SIZE, // eslint-disable-line
+				page: input.page ? parseInt(input.page, 10) : 0
+			});
+			return res;
+		}
+	}, {
+		key: 'transformOutput',
+		value: function transformOutput(response) {
+			return {
+				total: response.hits.total,
+				results: response.hits.hits.map(function (x) {
+					return x._source;
+				})
+			};
 		}
 	}, {
 		key: 'run',
@@ -100,20 +123,8 @@ var RepoFetcher = function () {
 			var _this = this;
 
 			return this.getESClient().then(function (client) {
-
-				if (search.per_page) {
-					// this is an exception to camelCase in that it is a config value
-					// @todo auto config to camelcase conversion
-					search.per_page = parseInt(search.per_page, 10); // eslint-disable-line camelcase
-				}
-
-				if (search.page) {
-					search.page = parseInt(search.page, 10);
-				}
-
-				_this._validate(search);
 				logger.info('getting repos');
-				return client.search(_this._buildSearchObject(search));
+				return client.search(_this._buildSearchObject(search)).bind(_this).then(_this.transformOutput);
 			});
 		}
 	}]);
