@@ -101,14 +101,14 @@ describe('RepoFetcher', function suite() {
 			'sort': 'forks-asc'
 		};
 		var searchObject = repoFetcher._buildSearchObject(payload);
-		_assert2.default.deepEqual(searchObject.body, [{
+		_assert2.default.deepEqual(searchObject.body, {
 			'query': {
 				'multi_match': {
 					'query': 'Army',
 					'fields': ['name', 'description']
 				}
 			}
-		}]);
+		});
 		_assert2.default.deepEqual(searchObject.sort, _param_map2.default['forks-asc']);
 
 		(0, _assert2.default)(searchObject.from === 10);
@@ -122,11 +122,11 @@ describe('RepoFetcher', function suite() {
 			'sort': 'forks-asc'
 		};
 		var searchObject = repoFetcher._buildSearchObject(payload);
-		_assert2.default.deepEqual(searchObject.body, [{
+		_assert2.default.deepEqual(searchObject.body, {
 			'query': {
 				'match_all': {}
 			}
-		}]);
+		});
 	});
 
 	it('will generate use default per page option if we don\'t specify a size', function test() {
@@ -183,19 +183,28 @@ describe('RepoFetcher', function suite() {
 			_assert2.default.deepEqual(store[0], {
 				'index': 'github',
 				'type': 'repo',
-				'body': [{
+				'body': {
 					'query': {
 						'match_all': {}
 					}
-				}],
-				'sort': [{
-					'forks_count': {
-						'order': 'asc'
-					}
-				}],
+				},
+				'sort': 'forks_count:asc',
 				'size': 5,
 				'from': 10
 			});
 		});
+	});
+
+	it('testing what response from es', function test() {
+
+		var repoFetcher = new _2.default(settings);
+
+		var payload = {
+			'page': 2,
+			'per_page': 5,
+			'sort': 'forks-asc'
+		};
+
+		return repoFetcher.run(payload);
 	});
 });

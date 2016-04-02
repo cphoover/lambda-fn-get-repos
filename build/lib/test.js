@@ -64,7 +64,7 @@ var RepoFetcher = function () {
 	}, {
 		key: '_buildSearchObject',
 		value: function _buildSearchObject(search) {
-			var searchBody = function () {
+			var searchBody = [function () {
 				if (search.text) {
 					return {
 						'query': {
@@ -80,7 +80,7 @@ var RepoFetcher = function () {
 						'match_all': {}
 					}
 				};
-			}();
+			}()];
 
 			var esSearch = {
 				index: this.esIndex,

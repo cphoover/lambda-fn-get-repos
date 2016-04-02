@@ -1,32 +1,8 @@
 {
-	"latest-commit-desc": [{
-		"pushed_at": {
-			"order": "desc"
-		}
-	}],
-	"latest-commit-asc": [{
-		"pushed_at": {
-			"order": "desc"
-		}
-	}],
-	"stars-desc": [{
-		"stargazers_count": {
-			"order": "desc"
-		}
-	}],
-	"stars-asc": [{
-		"stargazers_count": {
-			"order": "asc"
-		}
-	}],
-	"forks-desc": [{
-		"forks_count": {
-			"order": "desc"
-		}
-	}],
-	"forks-asc": [{
-		"forks_count": {
-			"order": "asc"
-		}
-	}]
+	"latest-commit-desc" :  "pushed_at:desc",
+	"latest-commit-asc"  :  "pushed_at:desc",
+	"stars-desc"         :  "stargazers_count:desc",
+	"stars-asc"          :  "stargazers_count:asc",
+	"forks-desc"         :  "forks_count:desc",
+	"forks-asc"          :  "forks_count:asc"
 }
