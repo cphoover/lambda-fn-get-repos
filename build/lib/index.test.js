@@ -187,7 +187,7 @@ describe('RepoFetcher', function suite() {
 			'sort': 'forks-asc'
 		};
 
-		return repoFetcher.run(payload).then(function () {
+		return repoFetcher.run(payload).tap(function () {
 			_assert2.default.deepEqual(store[0], {
 				'index': 'github',
 				'type': 'repo',
@@ -199,6 +199,11 @@ describe('RepoFetcher', function suite() {
 				'sort': 'forks_count:asc',
 				'size': 5,
 				'from': 10
+			});
+		}).then(function (x) {
+			return _assert2.default.deepEqual(x, {
+				'total': 112,
+				'results': []
 			});
 		});
 	});

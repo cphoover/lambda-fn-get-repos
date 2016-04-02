@@ -124,7 +124,9 @@ var RepoFetcher = function () {
 
 			return this.getESClient().then(function (client) {
 				logger.info('getting repos');
-				return client.search(_this._buildSearchObject(search)).bind(_this).then(_this.transformOutput);
+				return client.search(_this._buildSearchObject(search)).then(function (response) {
+					return _this.transformOutput(response);
+				});
 			});
 		}
 	}]);
