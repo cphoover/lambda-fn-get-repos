@@ -1,4 +1,6 @@
-lambda-fn-get-repos
+# lambda-fn-get-repos
+
+[![Build Status](https://semaphoreci.com/api/v1/cphoover/lambda-fn-get-repos/branches/master/badge.svg)](https://semaphoreci.com/cphoover/lambda-fn-get-repos)
 
 Main Tasks
 ------------------------------
